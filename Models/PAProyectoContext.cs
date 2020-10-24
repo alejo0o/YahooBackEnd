@@ -20,8 +20,10 @@ namespace Proyecto.Models
         public virtual DbSet<Respuesta> Respuesta { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
 
+        public virtual DbSet<PreguntaUsuario> PreguntaUsuario{get;set;}
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Categoria>(entity =>
             {
@@ -39,6 +41,11 @@ namespace Proyecto.Models
                 entity.Property(e => e.Catdescripcion).HasColumnName("catdescripcion");
 
                 entity.Property(e => e.Catnombre).HasColumnName("catnombre");
+            });
+            modelBuilder.Entity<PreguntaUsuario>(entity =>
+            {
+                entity.HasNoKey();
+
             });
 
             modelBuilder.Entity<Pregunta>(entity =>
