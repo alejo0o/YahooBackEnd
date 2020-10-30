@@ -14,6 +14,7 @@ namespace Proyecto.Models
         public int Userid { get; set; }
         public int Catid { get; set; }
         public string Pregtexto { get; set; }
+        public string Pregdetalle { get; set; }
 
         public virtual Categoria Cat { get; set; }
         public virtual Usuario User { get; set; }

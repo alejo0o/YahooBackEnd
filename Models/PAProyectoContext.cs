@@ -22,7 +22,6 @@ namespace Proyecto.Models
 
         public virtual DbSet<PreguntaUsuario> PreguntaUsuario{get;set;}
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Categoria>(entity =>
@@ -43,6 +42,7 @@ namespace Proyecto.Models
                 entity.Property(e => e.Catnombre).HasColumnName("catnombre");
             });
 
+            
             modelBuilder.Entity<PreguntaUsuario>(entity =>
             {
                 entity.HasNoKey();
@@ -67,6 +67,8 @@ namespace Proyecto.Models
 
                 entity.Property(e => e.Catid).HasColumnName("catid");
 
+                entity.Property(e => e.Pregdetalle).HasColumnName("pregdetalle");
+
                 entity.Property(e => e.Pregtexto).HasColumnName("pregtexto");
 
                 entity.Property(e => e.Userid).HasColumnName("userid");
@@ -82,6 +84,7 @@ namespace Proyecto.Models
                     .HasForeignKey(d => d.Userid)
                     .HasConstraintName("fk_pregunta_realiza_usuario");
             });
+            
 
             modelBuilder.Entity<Respuesta>(entity =>
             {
