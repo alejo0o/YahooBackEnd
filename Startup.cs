@@ -25,10 +25,12 @@ namespace Proyecto
         }
 
         public IConfiguration Configuration { get; }
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddControllers();
             string connString = ConfigurationExtensions.GetConnectionString(this.Configuration, "DefaultConnection");
             services.AddDbContext<PAProyectoContext>(
@@ -42,6 +44,18 @@ namespace Proyecto
                 var request = accessor.HttpContext.Request;
                 var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
                 return new UriService(uri);
+            });
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                builder =>
+                                {
+                                    builder.WithOrigins("http://example.com",
+                                                        "http://localhost:3000/api/pregunta")
+                                                        .AllowAnyHeader()
+                                                        .AllowAnyMethod()
+                                                        .AllowAnyOrigin();
+                                });
             });
             
         }
@@ -57,6 +71,8 @@ namespace Proyecto
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();
 

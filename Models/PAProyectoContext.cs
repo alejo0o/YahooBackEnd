@@ -23,7 +23,7 @@ namespace Proyecto.Models
         public virtual DbSet<PreguntaUsuario> PreguntaUsuario{get;set;}
 
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Categoria>(entity =>
             {
@@ -42,6 +42,7 @@ namespace Proyecto.Models
 
                 entity.Property(e => e.Catnombre).HasColumnName("catnombre");
             });
+
             modelBuilder.Entity<PreguntaUsuario>(entity =>
             {
                 entity.HasNoKey();
@@ -62,9 +63,6 @@ namespace Proyecto.Models
                     .HasName("pregunta_pk")
                     .IsUnique();
 
-                entity.HasIndex(e => new { e.Userid, e.Usernick })
-                    .HasName("realiza_fk");
-
                 entity.Property(e => e.Pregid).HasColumnName("pregid");
 
                 entity.Property(e => e.Catid).HasColumnName("catid");
@@ -72,10 +70,6 @@ namespace Proyecto.Models
                 entity.Property(e => e.Pregtexto).HasColumnName("pregtexto");
 
                 entity.Property(e => e.Userid).HasColumnName("userid");
-
-                entity.Property(e => e.Usernick)
-                    .IsRequired()
-                    .HasColumnName("usernick");
 
                 entity.HasOne(d => d.Cat)
                     .WithMany(p => p.Pregunta)
@@ -85,8 +79,7 @@ namespace Proyecto.Models
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Pregunta)
-                    .HasForeignKey(d => new { d.Userid, d.Usernick })
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasForeignKey(d => d.Userid)
                     .HasConstraintName("fk_pregunta_realiza_usuario");
             });
 
@@ -104,9 +97,6 @@ namespace Proyecto.Models
                     .HasName("respuesta_pk")
                     .IsUnique();
 
-                entity.HasIndex(e => new { e.Userid, e.Usernick })
-                    .HasName("da_fk");
-
                 entity.Property(e => e.Respid).HasColumnName("respid");
 
                 entity.Property(e => e.Pregid).HasColumnName("pregid");
@@ -114,10 +104,6 @@ namespace Proyecto.Models
                 entity.Property(e => e.Resptexto).HasColumnName("resptexto");
 
                 entity.Property(e => e.Userid).HasColumnName("userid");
-
-                entity.Property(e => e.Usernick)
-                    .IsRequired()
-                    .HasColumnName("usernick");
 
                 entity.HasOne(d => d.Preg)
                     .WithMany(p => p.Respuesta)
@@ -127,27 +113,30 @@ namespace Proyecto.Models
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Respuesta)
-                    .HasForeignKey(d => new { d.Userid, d.Usernick })
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasForeignKey(d => d.Userid)
                     .HasConstraintName("fk_respuest_da_usuario");
             });
 
             modelBuilder.Entity<Usuario>(entity =>
             {
-                entity.HasKey(e => new { e.Userid, e.Usernick })
+                entity.HasKey(e => e.Userid)
                     .HasName("pk_usuario");
 
                 entity.ToTable("usuario");
+
+                entity.HasIndex(e => e.Usernick)
+                    .HasName("nick_uniq")
+                    .IsUnique();
 
                 entity.HasIndex(e => new { e.Userid, e.Usernick })
                     .HasName("usuario_pk")
                     .IsUnique();
 
-                entity.Property(e => e.Userid)
-                    .HasColumnName("userid")
-                    .ValueGeneratedOnAdd();
+                entity.Property(e => e.Userid).HasColumnName("userid");
 
-                entity.Property(e => e.Usernick).HasColumnName("usernick");
+                entity.Property(e => e.Useradmin)
+                    .HasColumnName("useradmin")
+                    .HasDefaultValueSql("false");
 
                 entity.Property(e => e.Userapellido).HasColumnName("userapellido");
 
@@ -158,6 +147,10 @@ namespace Proyecto.Models
                     .HasColumnType("date");
 
                 entity.Property(e => e.Userfoto).HasColumnName("userfoto");
+
+                entity.Property(e => e.Usernick)
+                    .IsRequired()
+                    .HasColumnName("usernick");
 
                 entity.Property(e => e.Usernombre).HasColumnName("usernombre");
 

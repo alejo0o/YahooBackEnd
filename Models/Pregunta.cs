@@ -12,7 +12,6 @@ namespace Proyecto.Models
 
         public int Pregid { get; set; }
         public int Userid { get; set; }
-        public string Usernick { get; set; }
         public int Catid { get; set; }
         public string Pregtexto { get; set; }
 

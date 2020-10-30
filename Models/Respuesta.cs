@@ -7,7 +7,6 @@ namespace Proyecto.Models
     {
         public int Respid { get; set; }
         public int Userid { get; set; }
-        public string Usernick { get; set; }
         public int Pregid { get; set; }
         public string Resptexto { get; set; }
 
