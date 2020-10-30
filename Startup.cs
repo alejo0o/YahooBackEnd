@@ -51,7 +51,7 @@ namespace Proyecto
                                 builder =>
                                 {
                                     builder.WithOrigins("http://example.com",
-                                                        "http://localhost:3000/api/pregunta")
+                                                        "http://localhost:3000/")
                                                         .AllowAnyHeader()
                                                         .AllowAnyMethod()
                                                         .AllowAnyOrigin();
