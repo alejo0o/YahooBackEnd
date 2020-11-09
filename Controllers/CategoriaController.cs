@@ -27,15 +27,13 @@ namespace Proyecto.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoria([FromQuery] PaginationFilter filter)
         {
-            var route = Request.Path.Value;
-            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            /*var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);*/
             var data = await _context.Categoria
-                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
-                .Take(validFilter.PageSize)
                 .ToListAsync();
-            var totalRecords = await _context.Categoria.CountAsync();
-            var pagedReponse = PaginationHelper.CreatePagedReponse<Categoria>(data, validFilter, totalRecords, uriService, route);
-            return Ok(pagedReponse);
+            /*var totalRecords = await _context.Categoria.CountAsync();
+            var pagedReponse = PaginationHelper.CreatePagedReponse<Categoria>(data, validFilter, totalRecords, uriService, route);*/
+            return Ok(data);
         }
 
         // GET: api/Categoria/5
