@@ -95,7 +95,20 @@ namespace Proyecto.Controllers
             var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
             return Ok(pagedReponse);
         }
-        
+        [HttpGet("buscar/{busca}")]
+       public IActionResult getBuscar(string busca,[FromQuery] PaginationFilter filter)
+        {
+            var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var data =  _context.Pregunta
+            .FromSqlRaw("select * FROM pregunta WHERE pregtexto LIKE '%'"+busca+"'%' OR pregdetalle LIKE '%'"+busca+"'%' OR catnombre LIKE '%'"+busca+"'%'")
+            .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+            .Take(validFilter.PageSize)
+            .ToList();
+            var totalRecords = _context.Pregunta.Count();
+            var pagedReponse = PaginationHelper.CreatePagedReponse<Pregunta>(data, validFilter, totalRecords, uriService, route);
+            return Ok(pagedReponse);
+        }
         
     }
     
