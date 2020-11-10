@@ -88,8 +88,35 @@ namespace Proyecto.Controllers
             var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
             return Ok(pagedReponse);
         }
-        
-        
+        [HttpGet("getBuscar/{busqueda}")]
+        public IActionResult getBuscar(string busqueda,[FromQuery] PaginationFilter filter)
+        {
+            
+            var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var data =  _context.Pregunta
+            .FromSqlRaw("select * FROM pregunta WHERE pregtexto LIKE '%"+busqueda+"%' OR pregdetalle LIKE '%"+busqueda+"%' OR catnombre LIKE '%"+busqueda+"%'")
+            .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+            .Take(validFilter.PageSize)
+            .ToList();
+            var totalRecords = _context.Pregunta.Count();
+            var pagedReponse = PaginationHelper.CreatePagedReponse<Pregunta>(data, validFilter, totalRecords, uriService, route);
+            return Ok(pagedReponse);
+        }
+        [HttpGet("getRespuestas/{id}")]
+        public IActionResult getRespuestasId(int id,[FromQuery] PaginationFilter filter)
+        {   
+            var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var data =  _context.Respuesta
+            .FromSqlRaw("select * from respuesta where pregid = "+ id)
+            .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+            .Take(validFilter.PageSize)
+            .ToList();
+            var totalRecords = _context.Respuesta.Count();
+            var pagedReponse = PaginationHelper.CreatePagedReponse<Respuesta>(data, validFilter, totalRecords, uriService, route);
+            return Ok(pagedReponse);
+        }
     }
     
 }
