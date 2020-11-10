@@ -55,13 +55,21 @@ namespace Proyecto.Controllers
         {
             var route = Request.Path.Value;
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
-            var data =  _context.Usuario
-            .FromSqlRaw("select * from usuario order by userpuntaje")
+            var consulta = from u in _context.Usuario
+                           orderby u.Userpuntaje descending
+                           select new
+                           {
+                               id=u.Userid,
+                               foto=u.Userfoto,
+                               nick=u.Usernick,
+                               puntaje=u.Userpuntaje
+                           };
+            var data = consulta
             .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
             .Take(validFilter.PageSize)
             .ToList();
             var totalRecords = _context.Usuario.Count();
-            var pagedReponse = PaginationHelper.CreatePagedReponse<Usuario>(data, validFilter, totalRecords, uriService, route);
+            var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
             return Ok(pagedReponse);
         }
         [HttpGet("getpreguntasaleatorias")]
@@ -69,27 +77,12 @@ namespace Proyecto.Controllers
         {
             var route = Request.Path.Value;
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
-            /*var data = await _context.Pregunta
-                        .FromSqlRaw("select  * from pregunta order by random()")
-                        .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
-                        .Take(validFilter.PageSize)
-                        .ToListAsync();*/
-
-
-  
-            var consulta = from p in _context.Pregunta         
-               select new
-               {
-                   pregunta = p.Pregtexto,
-                   detalle = p.Pregtexto,
-                   categoria= p.Catnombre,
-                   categoriaid=p.Catid,
-                   preguntaID = p.Pregid
-               };
-            var data = consulta
-                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
-                .Take(validFilter.PageSize)    
-                .ToList();
+            
+            var data = _context.Pregunta
+            .FromSqlRaw("select  * from pregunta order by random()")
+            .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+            .Take(validFilter.PageSize)
+            .ToList();
 
             var totalRecords = _context.Pregunta.Count();
             var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
