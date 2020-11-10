@@ -16,6 +16,10 @@ namespace Proyecto.Models
         public string Pregtexto { get; set; }
         public string Pregdetalle { get; set; }
         public string Catnombre { get; set; }
+        public DateTime Pregfecha { get; set; }
+        public TimeSpan Preghora { get; set; }
+        public bool Pregestado { get; set; }
+        public int? Pregmejorresp { get; set; }
 
         public virtual Categoria Cat { get; set; }
         public virtual Usuario User { get; set; }

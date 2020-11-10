@@ -7,6 +7,8 @@ namespace Proyecto.Models
     {
         public Usuario()
         {
+            MensajeAdmin = new HashSet<Mensaje>();
+            MensajeUser = new HashSet<Mensaje>();
             Pregunta = new HashSet<Pregunta>();
             Respuesta = new HashSet<Respuesta>();
         }
@@ -23,6 +25,8 @@ namespace Proyecto.Models
         public int? Userpuntaje { get; set; }
         public bool? Useradmin { get; set; }
 
+        public virtual ICollection<Mensaje> MensajeAdmin { get; set; }
+        public virtual ICollection<Mensaje> MensajeUser { get; set; }
         public virtual ICollection<Pregunta> Pregunta { get; set; }
         public virtual ICollection<Respuesta> Respuesta { get; set; }
     }

@@ -16,6 +16,7 @@ namespace Proyecto.Models
         }
 
         public virtual DbSet<Categoria> Categoria { get; set; }
+        public virtual DbSet<Mensaje> Mensaje { get; set; }
         public virtual DbSet<Pregunta> Pregunta { get; set; }
         public virtual DbSet<Respuesta> Respuesta { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
@@ -45,6 +46,48 @@ namespace Proyecto.Models
                 entity.Property(e => e.Catnombre).HasColumnName("catnombre");
             });
 
+            modelBuilder.Entity<Mensaje>(entity =>
+            {
+                entity.HasKey(e => e.Menid)
+                    .HasName("pk_mensaje");
+
+                entity.ToTable("mensaje");
+
+                entity.Property(e => e.Menid).HasColumnName("menid");
+
+                entity.Property(e => e.Adminid).HasColumnName("adminid");
+
+                entity.Property(e => e.Mendetalle)
+                    .IsRequired()
+                    .HasColumnName("mendetalle");
+
+                entity.Property(e => e.Menfecha)
+                    .HasColumnName("menfecha")
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("now()");
+
+                entity.Property(e => e.Menhora)
+                    .HasColumnName("menhora")
+                    .HasColumnType("time without time zone")
+                    .HasDefaultValueSql("now()");
+
+                entity.Property(e => e.Mentitulo)
+                    .IsRequired()
+                    .HasColumnName("mentitulo");
+
+                entity.Property(e => e.Userid).HasColumnName("userid");
+
+                entity.HasOne(d => d.Admin)
+                    .WithMany(p => p.MensajeAdmin)
+                    .HasForeignKey(d => d.Adminid)
+                    .HasConstraintName("fk_admin_mensaje");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.MensajeUser)
+                    .HasForeignKey(d => d.Userid)
+                    .HasConstraintName("fk_user_mensaje");
+            });
+
             modelBuilder.Entity<Pregunta>(entity =>
             {
                 entity.HasKey(e => e.Pregid)
@@ -66,6 +109,20 @@ namespace Proyecto.Models
                 entity.Property(e => e.Catnombre).HasColumnName("catnombre");
 
                 entity.Property(e => e.Pregdetalle).HasColumnName("pregdetalle");
+
+                entity.Property(e => e.Pregestado).HasColumnName("pregestado");
+
+                entity.Property(e => e.Pregfecha)
+                    .HasColumnName("pregfecha")
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("now()");
+
+                entity.Property(e => e.Preghora)
+                    .HasColumnName("preghora")
+                    .HasColumnType("time without time zone")
+                    .HasDefaultValueSql("now()");
+
+                entity.Property(e => e.Pregmejorresp).HasColumnName("pregmejorresp");
 
                 entity.Property(e => e.Pregtexto).HasColumnName("pregtexto");
 
@@ -100,6 +157,16 @@ namespace Proyecto.Models
                 entity.Property(e => e.Respid).HasColumnName("respid");
 
                 entity.Property(e => e.Pregid).HasColumnName("pregid");
+
+                entity.Property(e => e.Respfecha)
+                    .HasColumnName("respfecha")
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("now()");
+
+                entity.Property(e => e.Resphora)
+                    .HasColumnName("resphora")
+                    .HasColumnType("time without time zone")
+                    .HasDefaultValueSql("now()");
 
                 entity.Property(e => e.Resptexto).HasColumnName("resptexto");
 
