@@ -53,8 +53,6 @@ namespace Proyecto.Controllers
         [HttpGet("ordenarusuarios")]
        public IActionResult getUsuariosOrdenados(int id,[FromQuery] PaginationFilter filter)
         {
-            var route = Request.Path.Value;
-            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
             var consulta = from u in _context.Usuario
                            orderby u.Userpuntaje descending
                            select new
@@ -64,13 +62,10 @@ namespace Proyecto.Controllers
                                nick=u.Usernick,
                                puntaje=u.Userpuntaje
                            };
-            var data = consulta
-            .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
-            .Take(validFilter.PageSize)
-            .ToList();
-            var totalRecords = _context.Usuario.Count();
-            var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
-            return Ok(pagedReponse);
+            var data = consulta     
+            .Take(10)
+            .ToList();             
+            return Ok(data);
         }
         [HttpGet("getpreguntasaleatorias")]
         public  IActionResult getPreguntasAleatorias([FromQuery] PaginationFilter filter)
