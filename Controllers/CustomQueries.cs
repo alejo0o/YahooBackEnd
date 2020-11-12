@@ -133,7 +133,8 @@ namespace Proyecto.Controllers
                             respfecha = r.Respfecha,
                             resptexto = r.Resptexto,
                             resphora = r.Resphora,
-                            usernick = u.Usernick
+                            usernick = u.Usernick,
+                            userfoto = u.Userfoto
                         };
             var data = consulta.Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
             .Take(validFilter.PageSize)
@@ -156,7 +157,10 @@ namespace Proyecto.Controllers
                             pregid = p.Pregid,
                             pregtexto = p.Pregtexto,
                             pregdetalle = p.Pregdetalle,
-                            usernick = u.Usernick
+                            pregfecha = p.Pregfecha,
+                            preghora = p.Preghora,
+                            usernick = u.Usernick,
+                            userfoto = u.Userfoto
                         };
             var data = consulta;
             return Ok(data);
