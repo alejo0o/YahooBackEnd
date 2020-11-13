@@ -118,7 +118,7 @@ namespace Proyecto.Controllers
         }
         */
 
-
+        //Función para respuestas + usuario por pregunta
         [HttpGet("respPregunta/{id}")]
         public IActionResult respPregunta(int id,[FromQuery] PaginationFilter filter)
         {
@@ -143,7 +143,7 @@ namespace Proyecto.Controllers
             var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
             return Ok(pagedReponse);
         }
-
+        //Función para pregunt por id + usuario
         [HttpGet("pregResp/{id}")]
         public IActionResult pregResp(int id,[FromQuery] PaginationFilter filter)
         {
@@ -166,8 +166,32 @@ namespace Proyecto.Controllers
             return Ok(data);
         }
 
-
-
+        //Función para preguntas+usuario por categoria
+        [HttpGet("pregCategoria/{id}")]
+        public IActionResult pregCategoria(int id,[FromQuery] PaginationFilter filter)
+        {
+            var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var consulta = from p in _context.Pregunta
+                        join u in _context.Usuario on p.Userid equals u.Userid
+                        where p.Catid == id
+                        select new
+                        {
+                            pregid = p.Pregid,
+                            pregtexto = p.Pregtexto,
+                            pregdetalle = p.Pregdetalle,
+                            pregfecha = p.Pregfecha,
+                            preghora = p.Preghora,
+                            usernick = u.Usernick,
+                            userfoto = u.Userfoto
+                        };
+            var data = consulta.Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+            .Take(validFilter.PageSize)
+            .ToList();
+            var totalRecords = consulta.Count();
+            var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
+            return Ok(pagedReponse);
+        }
     }
     
 }
