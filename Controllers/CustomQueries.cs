@@ -127,6 +127,8 @@ namespace Proyecto.Controllers
             var consulta = from r in _context.Respuesta
                         join u in _context.Usuario on r.Userid equals u.Userid
                         where r.Pregid == id
+                        orderby r.Respfecha ascending
+                        orderby r.Resphora ascending
                         select new
                         {
                             respid = r.Respid,
@@ -159,6 +161,7 @@ namespace Proyecto.Controllers
                             pregdetalle = p.Pregdetalle,
                             pregfecha = p.Pregfecha,
                             preghora = p.Preghora,
+                            pregmejorresp = p.Pregmejorresp,
                             usernick = u.Usernick,
                             userfoto = u.Userfoto
                         };
