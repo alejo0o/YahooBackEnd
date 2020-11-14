@@ -225,7 +225,12 @@ namespace Proyecto.Models
 
                 entity.Property(e => e.Userpuntaje).HasColumnName("userpuntaje");
 
-                entity.Property(e => e.Usersexo).HasColumnName("usersexo");
+                entity.Property(e => e.Usersexo)
+                    .IsRequired()
+                    .HasColumnName("usersexo")
+                    .HasMaxLength(9)
+                    .IsFixedLength()
+                    .HasDefaultValueSql("'Otro'::bpchar");
             });
 
             OnModelCreatingPartial(modelBuilder);
