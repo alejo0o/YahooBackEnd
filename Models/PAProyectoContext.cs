@@ -191,6 +191,10 @@ namespace Proyecto.Models
 
                 entity.ToTable("usuario");
 
+                entity.HasIndex(e => e.Useremail)
+                    .HasName("email_uniq")
+                    .IsUnique();
+
                 entity.HasIndex(e => e.Usernick)
                     .HasName("nick_uniq")
                     .IsUnique();
@@ -223,7 +227,9 @@ namespace Proyecto.Models
 
                 entity.Property(e => e.Userpass).HasColumnName("userpass");
 
-                entity.Property(e => e.Userpuntaje).HasColumnName("userpuntaje");
+                entity.Property(e => e.Userpuntaje)
+                    .HasColumnName("userpuntaje")
+                    .HasDefaultValueSql("20");
 
                 entity.Property(e => e.Usersexo)
                     .IsRequired()

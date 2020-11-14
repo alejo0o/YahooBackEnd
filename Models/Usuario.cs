@@ -21,9 +21,9 @@ namespace Proyecto.Models
         public string Userpass { get; set; }
         public string Useremail { get; set; }
         public string Userfoto { get; set; }
-        public int? Userpuntaje { get; set; }
         public bool? Useradmin { get; set; }
         public string Usersexo { get; set; }
+        public int Userpuntaje { get; set; }
 
         public virtual ICollection<Mensaje> MensajeAdmin { get; set; }
         public virtual ICollection<Mensaje> MensajeUser { get; set; }
