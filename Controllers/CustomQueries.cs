@@ -168,6 +168,20 @@ namespace Proyecto.Controllers
             var data = consulta;
             return Ok(data);
         }
+        [HttpGet("getUsuario/{email}/{pass}")]
+        public IActionResult getBuscar(string email, string pass ,[FromQuery] PaginationFilter filter)
+        {
+            var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var data =  _context.Usuario
+            .FromSqlRaw("select * FROM usuario WHERE useremail = '"+email+"' and userpass = '"+pass+"'")
+            .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+            .Take(validFilter.PageSize)
+            .ToList();
+            var totalRecords = _context.Usuario.Count();
+            var pagedReponse = PaginationHelper.CreatePagedReponse<Usuario>(data, validFilter, totalRecords, uriService, route);
+            return Ok(pagedReponse);
+        }
 
         //Función para preguntas+usuario por categoria
         [HttpGet("pregCategoria/{id}")]
