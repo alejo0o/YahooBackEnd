@@ -126,7 +126,9 @@ namespace Proyecto.Controllers
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
             var consulta = from r in _context.Respuesta
                         join u in _context.Usuario on r.Userid equals u.Userid
+                        join p in _context.Pregunta on r.Pregid equals p.Pregid
                         where r.Pregid == id
+                        where r.Respid != p.Pregmejorresp 
                         orderby r.Respfecha ascending
                         orderby r.Resphora ascending
                         select new
@@ -145,6 +147,10 @@ namespace Proyecto.Controllers
             var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
             return Ok(pagedReponse);
         }
+
+
+
+
         //Función para pregunt por id + usuario
         [HttpGet("pregResp/{id}")]
         public IActionResult pregResp(int id,[FromQuery] PaginationFilter filter)
@@ -182,6 +188,32 @@ namespace Proyecto.Controllers
             var pagedReponse = PaginationHelper.CreatePagedReponse<Usuario>(data, validFilter, totalRecords, uriService, route);
             return Ok(pagedReponse);
         }
+
+        
+        //Función para respuesta favorita + usuario
+        [HttpGet("RespFav/{id}")]
+        public IActionResult RespFav(int id,[FromQuery] PaginationFilter filter)
+        {
+            var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var consulta = from p in _context.Pregunta
+                        join u in _context.Usuario on p.Userid equals u.Userid
+                        join r in _context.Respuesta on p.Pregid equals r.Pregid
+                        where p.Pregid == id
+                        where p.Pregmejorresp == r.Respid
+                        select new
+                        {
+                            respid = r.Respid,
+                            respfecha = r.Respfecha,
+                            resptexto = r.Resptexto,
+                            resphora = r.Resphora,
+                            usernick = u.Usernick,
+                            userfoto = u.Userfoto
+                        };
+            var data = consulta;
+            return Ok(data);
+        }
+
 
         //Función para preguntas+usuario por categoria
         [HttpGet("pregCategoria/{id}")]
