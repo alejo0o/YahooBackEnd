@@ -168,19 +168,27 @@ namespace Proyecto.Controllers
             var data = consulta;
             return Ok(data);
         }
-        [HttpGet("getUsuario/{email}/{pass}")]
-        public IActionResult getBuscar(string email, string pass ,[FromQuery] PaginationFilter filter)
+        [HttpGet("getUsuario/{nick}/{pass}")]
+        public IActionResult getBuscar(string nick, string pass ,[FromQuery] PaginationFilter filter)
         {
             var route = Request.Path.Value;
-            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
-            var data =  _context.Usuario
-            .FromSqlRaw("select * FROM usuario WHERE useremail = '"+email+"' and userpass = '"+pass+"'")
-            .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
-            .Take(validFilter.PageSize)
-            .ToList();
-            var totalRecords = _context.Usuario.Count();
-            var pagedReponse = PaginationHelper.CreatePagedReponse<Usuario>(data, validFilter, totalRecords, uriService, route);
-            return Ok(pagedReponse);
+            var data = from p in _context.Usuario
+                        where p.Usernick == nick
+                        where p.Userpass==pass
+                        select new
+                        {
+                            userid=p.Userid,
+                            usernombre=p.Usernombre,
+                            userapellido=p.Userapellido,
+                            usernick = p.Usernick, 
+                            useremail=p.Useremail,
+                            userfechanacimiento=p.Userfechanacimiento,
+                            userfoto = p.Userfoto,
+                            useradmin=p.Useradmin,
+                            usersexo=p.Usersexo,
+                            userpuntaje=p.Userpuntaje
+                        };
+            return Ok(data);
         }
 
         //Función para preguntas+usuario por categoria
