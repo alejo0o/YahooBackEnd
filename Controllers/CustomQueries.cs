@@ -249,6 +249,93 @@ namespace Proyecto.Controllers
             var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
             return Ok(pagedReponse);
         }
+
+        //Función para preguntas X usuario
+        [HttpGet("pregXuser/{id}")]
+        public IActionResult pregXuser(int id,[FromQuery] PaginationFilter filter)
+        {
+            var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var consulta = from p in _context.Pregunta
+                        join u in _context.Usuario on p.Userid equals u.Userid
+                        where p.Userid == id
+                        select new
+                        {
+                            pregid = p.Pregid,
+                            pregtexto = p.Pregtexto,
+                            pregdetalle = p.Pregdetalle,
+                            pregfecha = p.Pregfecha,
+                            preghora = p.Preghora,
+                            pregestado = p.Pregestado
+                        };
+            var data = consulta.Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+            .Take(validFilter.PageSize)
+            .ToList();
+            var totalRecords = consulta.Count();
+            var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
+            return Ok(pagedReponse);
+        }
+
+        //Función para pregunta con (respuesta X usuario)
+        [HttpGet("pregYrespXuser/{id}")]
+        public IActionResult pregYrespXuser(int id,[FromQuery] PaginationFilter filter)
+        {
+            var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var consulta = from p in _context.Pregunta
+                        join r in _context.Respuesta on p.Pregid equals r.Pregid
+                        join u in _context.Usuario on p.Userid equals u.Userid
+                        where r.Userid == id
+                        select new
+                        {
+                            userid = r.Userid,
+                            pregid = p.Pregid,
+                            pregtexto = p.Pregtexto,
+                            pregdetalle = p.Pregdetalle,
+                            respid = r.Respid,
+                            respfecha = r.Respfecha,
+                            resptexto = r.Resptexto,
+                            resphora = r.Resphora
+
+                        };
+            var data = consulta.Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+            .Take(validFilter.PageSize)
+            .ToList();
+            var totalRecords = consulta.Count();
+            var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
+            return Ok(pagedReponse);
+        }
+
+
+        //Función para pregunta caducadas
+        [HttpGet("predCad/{id}")]
+        public IActionResult predCad(int id,[FromQuery] PaginationFilter filter)
+        {
+            var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var consulta = from p in _context.Pregunta
+                        where p.Userid == id
+                        where p.Pregestado == true
+                        select new
+                        {
+                            pregid = p.Pregid,
+                            pregtexto = p.Pregtexto,
+                            pregdetalle = p.Pregdetalle,
+                            pregfecha = p.Pregfecha,
+                            preghora = p.Preghora,
+                            pregestado = p.Pregestado
+
+                        };
+            var data = consulta.Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+            .Take(validFilter.PageSize)
+            .ToList();
+            var totalRecords = consulta.Count();
+            var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
+            return Ok(pagedReponse);
+        }
+
+
+
     }
     
 }
