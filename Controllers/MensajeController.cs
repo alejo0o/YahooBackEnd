@@ -29,7 +29,7 @@ namespace Proyecto.Controllers
 
         // GET: api/Mensaje/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Mensaje>> GetMensaje(int id)
+        public async Task<ActionResult<Mensaje>> GetMensaje(decimal id)
         {
             var mensaje = await _context.Mensaje.FindAsync(id);
 
@@ -45,7 +45,7 @@ namespace Proyecto.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMensaje(int id, Mensaje mensaje)
+        public async Task<IActionResult> PutMensaje(decimal id, Mensaje mensaje)
         {
             if (id != mensaje.Menid)
             {
@@ -87,7 +87,7 @@ namespace Proyecto.Controllers
 
         // DELETE: api/Mensaje/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Mensaje>> DeleteMensaje(int id)
+        public async Task<ActionResult<Mensaje>> DeleteMensaje(decimal id)
         {
             var mensaje = await _context.Mensaje.FindAsync(id);
             if (mensaje == null)
@@ -101,7 +101,7 @@ namespace Proyecto.Controllers
             return mensaje;
         }
 
-        private bool MensajeExists(int id)
+        private bool MensajeExists(decimal id)
         {
             return _context.Mensaje.Any(e => e.Menid == id);
         }

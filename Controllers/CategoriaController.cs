@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyecto.Models;
-using Proyecto.Pagination;
 
 namespace Proyecto.Controllers
 {
@@ -15,25 +14,17 @@ namespace Proyecto.Controllers
     public class CategoriaController : ControllerBase
     {
         private readonly paproyectoContext _context;
-        private readonly IUriService uriService;
 
-        public CategoriaController(paproyectoContext context,IUriService uriService)
+        public CategoriaController(paproyectoContext context)
         {
             _context = context;
-            this.uriService = uriService;
         }
 
         // GET: api/Categoria
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoria([FromQuery] PaginationFilter filter)
+        public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoria()
         {
-            /*var route = Request.Path.Value;
-            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);*/
-            var data = await _context.Categoria
-                .ToListAsync();
-            /*var totalRecords = await _context.Categoria.CountAsync();
-            var pagedReponse = PaginationHelper.CreatePagedReponse<Categoria>(data, validFilter, totalRecords, uriService, route);*/
-            return Ok(data);
+            return await _context.Categoria.ToListAsync();
         }
 
         // GET: api/Categoria/5
@@ -54,7 +45,7 @@ namespace Proyecto.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<ActionResult<Categoria>> PutCategoria(int id, Categoria categoria)
+        public async Task<IActionResult> PutCategoria(decimal id, Categoria categoria)
         {
             if (id != categoria.Catid)
             {
@@ -79,7 +70,7 @@ namespace Proyecto.Controllers
                 }
             }
 
-            return categoria;
+            return NoContent();
         }
 
         // POST: api/Categoria
@@ -96,7 +87,7 @@ namespace Proyecto.Controllers
 
         // DELETE: api/Categoria/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Categoria>> DeleteCategoria(int id)
+        public async Task<ActionResult<Categoria>> DeleteCategoria(decimal id)
         {
             var categoria = await _context.Categoria.FindAsync(id);
             if (categoria == null)
@@ -110,7 +101,7 @@ namespace Proyecto.Controllers
             return categoria;
         }
 
-        private bool CategoriaExists(int id)
+        private bool CategoriaExists(decimal id)
         {
             return _context.Categoria.Any(e => e.Catid == id);
         }

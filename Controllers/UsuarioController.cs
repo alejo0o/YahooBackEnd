@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyecto.Models;
-using Proyecto.Pagination;
 
 namespace Proyecto.Controllers
 {
@@ -15,32 +14,22 @@ namespace Proyecto.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly paproyectoContext _context;
-        private readonly IUriService uriService;
 
-        public UsuarioController(paproyectoContext context,IUriService uriService)
+        public UsuarioController(paproyectoContext context)
         {
             _context = context;
-            this.uriService = uriService;
         }
 
         // GET: api/Usuario
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuario([FromQuery] PaginationFilter filter)
+        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuario()
         {
-            var route = Request.Path.Value;
-            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
-            var data = await _context.Usuario
-                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
-                .Take(validFilter.PageSize)
-                .ToListAsync();
-            var totalRecords = await _context.Usuario.CountAsync();
-            var pagedReponse = PaginationHelper.CreatePagedReponse<Usuario>(data, validFilter, totalRecords, uriService, route);
-            return Ok(pagedReponse);
+            return await _context.Usuario.ToListAsync();
         }
 
         // GET: api/Usuario/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> GetUsuario(int id)
+        public async Task<ActionResult<Usuario>> GetUsuario(decimal id)
         {
             var usuario = await _context.Usuario.FindAsync(id);
 
@@ -56,7 +45,7 @@ namespace Proyecto.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<ActionResult<Usuario>> PutUsuario(int id, Usuario usuario)
+        public async Task<IActionResult> PutUsuario(decimal id, Usuario usuario)
         {
             if (id != usuario.Userid)
             {
@@ -81,7 +70,7 @@ namespace Proyecto.Controllers
                 }
             }
 
-            return usuario;
+            return NoContent();
         }
 
         // POST: api/Usuario
@@ -98,7 +87,7 @@ namespace Proyecto.Controllers
 
         // DELETE: api/Usuario/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Usuario>> DeleteUsuario(int id)
+        public async Task<ActionResult<Usuario>> DeleteUsuario(decimal id)
         {
             var usuario = await _context.Usuario.FindAsync(id);
             if (usuario == null)
@@ -112,7 +101,7 @@ namespace Proyecto.Controllers
             return usuario;
         }
 
-        private bool UsuarioExists(int id)
+        private bool UsuarioExists(decimal id)
         {
             return _context.Usuario.Any(e => e.Userid == id);
         }

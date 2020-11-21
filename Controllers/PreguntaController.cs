@@ -17,7 +17,8 @@ namespace Proyecto.Controllers
         private readonly paproyectoContext _context;
         private readonly IUriService uriService;
 
-        public PreguntaController(paproyectoContext context, IUriService uriService)
+
+        public PreguntaController(paproyectoContext context,IUriService uriService)
         {
             _context = context;
             this.uriService = uriService;
@@ -40,7 +41,7 @@ namespace Proyecto.Controllers
 
         // GET: api/Pregunta/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pregunta>> GetPregunta(int id)
+        public async Task<ActionResult<Pregunta>> GetPregunta(decimal id)
         {
             var pregunta = await _context.Pregunta.FindAsync(id);
 
@@ -56,7 +57,7 @@ namespace Proyecto.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<ActionResult<Pregunta>> PutPregunta(int id, Pregunta pregunta)
+        public async Task<IActionResult> PutPregunta(decimal id, Pregunta pregunta)
         {
             if (id != pregunta.Pregid)
             {
@@ -81,7 +82,7 @@ namespace Proyecto.Controllers
                 }
             }
 
-            return pregunta;
+            return NoContent();
         }
 
         // POST: api/Pregunta
@@ -98,7 +99,7 @@ namespace Proyecto.Controllers
 
         // DELETE: api/Pregunta/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Pregunta>> DeletePregunta(int id)
+        public async Task<ActionResult<Pregunta>> DeletePregunta(decimal id)
         {
             var pregunta = await _context.Pregunta.FindAsync(id);
             if (pregunta == null)
@@ -112,7 +113,7 @@ namespace Proyecto.Controllers
             return pregunta;
         }
 
-        private bool PreguntaExists(int id)
+        private bool PreguntaExists(decimal id)
         {
             return _context.Pregunta.Any(e => e.Pregid == id);
         }
