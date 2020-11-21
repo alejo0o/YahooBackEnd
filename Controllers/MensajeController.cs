@@ -13,9 +13,9 @@ namespace Proyecto.Controllers
     [ApiController]
     public class MensajeController : ControllerBase
     {
-        private readonly PAProyectoContext _context;
+        private readonly paproyectoContext _context;
 
-        public MensajeController(PAProyectoContext context)
+        public MensajeController(paproyectoContext context)
         {
             _context = context;
         }

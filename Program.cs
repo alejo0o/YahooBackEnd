@@ -21,7 +21,7 @@ namespace Proyecto
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<PAProyectoContext>();
+                    var context = services.GetRequiredService<paproyectoContext>();
                     context.Database.EnsureCreated();
                 }
                 catch (Exception ex)

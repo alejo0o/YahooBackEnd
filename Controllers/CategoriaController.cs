@@ -14,10 +14,10 @@ namespace Proyecto.Controllers
     [ApiController]
     public class CategoriaController : ControllerBase
     {
-        private readonly PAProyectoContext _context;
+        private readonly paproyectoContext _context;
         private readonly IUriService uriService;
 
-        public CategoriaController(PAProyectoContext context,IUriService uriService)
+        public CategoriaController(paproyectoContext context,IUriService uriService)
         {
             _context = context;
             this.uriService = uriService;

@@ -5,9 +5,9 @@ namespace Proyecto.Models
 {
     public partial class Mensaje
     {
-        public int Menid { get; set; }
-        public int Adminid { get; set; }
-        public int Userid { get; set; }
+        public decimal Adminid { get; set; }
+        public decimal Menid { get; set; }
+        public decimal Userid { get; set; }
         public string Mentitulo { get; set; }
         public string Mendetalle { get; set; }
         public DateTime Menfecha { get; set; }

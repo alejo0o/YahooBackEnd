@@ -14,10 +14,10 @@ namespace Proyecto.Controllers
     [ApiController]
     public class PreguntaController : ControllerBase
     {
-        private readonly PAProyectoContext _context;
+        private readonly paproyectoContext _context;
         private readonly IUriService uriService;
 
-        public PreguntaController(PAProyectoContext context, IUriService uriService)
+        public PreguntaController(paproyectoContext context, IUriService uriService)
         {
             _context = context;
             this.uriService = uriService;

@@ -14,9 +14,9 @@ namespace Proyecto.Controllers
     [ApiController]
     public class CustomQueries:Controller
     {
-        private PAProyectoContext _context;
+        private paproyectoContext _context;
         private readonly IUriService uriService;
-        public CustomQueries(PAProyectoContext context,IUriService uriService)
+        public CustomQueries(paproyectoContext context,IUriService uriService)
         {
             this._context = context;
             this.uriService = uriService;

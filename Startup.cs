@@ -33,8 +33,8 @@ namespace Proyecto
             
             services.AddControllers();
             string connString = ConfigurationExtensions.GetConnectionString(this.Configuration, "DefaultConnection");
-            services.AddDbContext<PAProyectoContext>(
-                options=> options.UseNpgsql(connString)
+            services.AddDbContext<paproyectoContext>(
+                options=> options.UseSqlServer(connString)
             );
             //Uri service
             services.AddHttpContextAccessor();

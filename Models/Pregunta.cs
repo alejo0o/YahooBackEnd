@@ -10,12 +10,12 @@ namespace Proyecto.Models
             Respuesta = new HashSet<Respuesta>();
         }
 
-        public int Pregid { get; set; }
-        public int Userid { get; set; }
-        public int Catid { get; set; }
+        public decimal Pregid { get; set; }
+        public decimal Userid { get; set; }
+        public decimal Catid { get; set; }
+        public string Catnombre { get; set; }
         public string Pregtexto { get; set; }
         public string Pregdetalle { get; set; }
-        public string Catnombre { get; set; }
         public DateTime Pregfecha { get; set; }
         public TimeSpan Preghora { get; set; }
         public bool Pregestado { get; set; }

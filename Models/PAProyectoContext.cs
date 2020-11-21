@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Proyecto.Models
 {
-    public partial class PAProyectoContext : DbContext
+    public partial class paproyectoContext : DbContext
     {
-        public PAProyectoContext()
+        public paproyectoContext()
         {
         }
 
-        public PAProyectoContext(DbContextOptions<PAProyectoContext> options)
+        public paproyectoContext(DbContextOptions<paproyectoContext> options)
             : base(options)
         {
         }
@@ -23,220 +23,247 @@ namespace Proyecto.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+        
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Categoria>(entity =>
             {
-                entity.HasKey(e => e.Catid)
-                    .HasName("pk_categoria");
+                entity.HasKey(e => e.Catid);
 
-                entity.ToTable("categoria");
+                entity.ToTable("CATEGORIA");
 
-                entity.HasIndex(e => e.Catid)
-                    .HasName("categoria_pk")
-                    .IsUnique();
+                entity.Property(e => e.Catid)
+                    .HasColumnName("CATID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
 
-                entity.Property(e => e.Catid).HasColumnName("catid");
+                entity.Property(e => e.Catdescripcion)
+                    .HasColumnName("CATDESCRIPCION")
+                    .HasColumnType("text");
 
-                entity.Property(e => e.Catdescripcion).HasColumnName("catdescripcion");
-
-                entity.Property(e => e.Catnombre).HasColumnName("catnombre");
+                entity.Property(e => e.Catnombre)
+                    .IsRequired()
+                    .HasColumnName("CATNOMBRE")
+                    .HasColumnType("text");
             });
 
             modelBuilder.Entity<Mensaje>(entity =>
             {
-                entity.HasKey(e => e.Menid)
-                    .HasName("pk_mensaje");
+                entity.HasKey(e => e.Menid);
 
-                entity.ToTable("mensaje");
+                entity.ToTable("MENSAJE");
 
-                entity.Property(e => e.Menid).HasColumnName("menid");
+                entity.Property(e => e.Menid)
+                    .HasColumnName("MENID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
 
-                entity.Property(e => e.Adminid).HasColumnName("adminid");
+                entity.Property(e => e.Adminid)
+                    .HasColumnName("ADMINID")
+                    .HasColumnType("numeric(18, 0)");
 
                 entity.Property(e => e.Mendetalle)
                     .IsRequired()
-                    .HasColumnName("mendetalle");
+                    .HasColumnName("MENDETALLE")
+                    .HasColumnType("text");
 
                 entity.Property(e => e.Menfecha)
-                    .HasColumnName("menfecha")
+                    .HasColumnName("MENFECHA")
                     .HasColumnType("date")
-                    .HasDefaultValueSql("now()");
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Menhora)
-                    .HasColumnName("menhora")
-                    .HasColumnType("time without time zone")
-                    .HasDefaultValueSql("now()");
+                    .HasColumnName("MENHORA")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Mentitulo)
                     .IsRequired()
-                    .HasColumnName("mentitulo");
+                    .HasColumnName("MENTITULO")
+                    .HasColumnType("text");
 
-                entity.Property(e => e.Userid).HasColumnName("userid");
+                entity.Property(e => e.Userid)
+                    .HasColumnName("USERID")
+                    .HasColumnType("numeric(18, 0)");
 
                 entity.HasOne(d => d.Admin)
                     .WithMany(p => p.MensajeAdmin)
                     .HasForeignKey(d => d.Adminid)
-                    .HasConstraintName("fk_admin_mensaje");
+                    .HasConstraintName("FK_MENSAJE_ADMINMEN_USUARIO");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.MensajeUser)
                     .HasForeignKey(d => d.Userid)
-                    .HasConstraintName("fk_user_mensaje");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_MENSAJE_USERMEN_USUARIO");
             });
 
             modelBuilder.Entity<Pregunta>(entity =>
             {
-                entity.HasKey(e => e.Pregid)
-                    .HasName("pk_pregunta");
+                entity.HasKey(e => e.Pregid);
 
-                entity.ToTable("pregunta");
+                entity.ToTable("PREGUNTA");
 
-                entity.HasIndex(e => e.Catid)
-                    .HasName("posee_fk");
+                entity.Property(e => e.Pregid)
+                    .HasColumnName("PREGID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
 
-                entity.HasIndex(e => e.Pregid)
-                    .HasName("pregunta_pk")
-                    .IsUnique();
+                entity.Property(e => e.Catid)
+                    .HasColumnName("CATID")
+                    .HasColumnType("numeric(18, 0)");
 
-                entity.Property(e => e.Pregid).HasColumnName("pregid");
+                entity.Property(e => e.Catnombre)
+                    .IsRequired()
+                    .HasColumnName("CATNOMBRE")
+                    .HasColumnType("text");
 
-                entity.Property(e => e.Catid).HasColumnName("catid");
+                entity.Property(e => e.Pregdetalle)
+                    .HasColumnName("PREGDETALLE")
+                    .HasColumnType("text");
 
-                entity.Property(e => e.Catnombre).HasColumnName("catnombre");
-
-                entity.Property(e => e.Pregdetalle).HasColumnName("pregdetalle");
-
-                entity.Property(e => e.Pregestado).HasColumnName("pregestado");
+                entity.Property(e => e.Pregestado).HasColumnName("PREGESTADO");
 
                 entity.Property(e => e.Pregfecha)
-                    .HasColumnName("pregfecha")
+                    .HasColumnName("PREGFECHA")
                     .HasColumnType("date")
-                    .HasDefaultValueSql("now()");
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Preghora)
-                    .HasColumnName("preghora")
-                    .HasColumnType("time without time zone")
-                    .HasDefaultValueSql("now()");
+                    .HasColumnName("PREGHORA")
+                    .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Pregmejorresp).HasColumnName("pregmejorresp");
+                entity.Property(e => e.Pregmejorresp).HasColumnName("PREGMEJORRESP");
 
-                entity.Property(e => e.Pregtexto).HasColumnName("pregtexto");
+                entity.Property(e => e.Pregtexto)
+                    .IsRequired()
+                    .HasColumnName("PREGTEXTO")
+                    .HasColumnType("text");
 
-                entity.Property(e => e.Userid).HasColumnName("userid");
+                entity.Property(e => e.Userid)
+                    .HasColumnName("USERID")
+                    .HasColumnType("numeric(18, 0)");
 
                 entity.HasOne(d => d.Cat)
                     .WithMany(p => p.Pregunta)
                     .HasForeignKey(d => d.Catid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_pregunta_posee_categori");
+                    .HasConstraintName("FK_PREGUNTA_CATPREG_CATEGORI");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Pregunta)
                     .HasForeignKey(d => d.Userid)
-                    .HasConstraintName("fk_pregunta_realiza_usuario");
+                    .HasConstraintName("FK_PREGUNTA_USERPREG_USUARIO");
             });
 
             modelBuilder.Entity<Respuesta>(entity =>
             {
-                entity.HasKey(e => e.Respid)
-                    .HasName("pk_respuesta");
+                entity.HasKey(e => e.Respid);
 
-                entity.ToTable("respuesta");
+                entity.ToTable("RESPUESTA");
 
-                entity.HasIndex(e => e.Pregid)
-                    .HasName("tiene_fk");
+                entity.Property(e => e.Respid)
+                    .HasColumnName("RESPID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
 
-                entity.HasIndex(e => e.Respid)
-                    .HasName("respuesta_pk")
-                    .IsUnique();
-
-                entity.Property(e => e.Respid).HasColumnName("respid");
-
-                entity.Property(e => e.Pregid).HasColumnName("pregid");
+                entity.Property(e => e.Pregid)
+                    .HasColumnName("PREGID")
+                    .HasColumnType("numeric(18, 0)");
 
                 entity.Property(e => e.Respfecha)
-                    .HasColumnName("respfecha")
+                    .HasColumnName("RESPFECHA")
                     .HasColumnType("date")
-                    .HasDefaultValueSql("now()");
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Resphora)
-                    .HasColumnName("resphora")
-                    .HasColumnType("time without time zone")
-                    .HasDefaultValueSql("now()");
+                    .HasColumnName("RESPHORA")
+                    .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Resptexto).HasColumnName("resptexto");
+                entity.Property(e => e.Resptexto)
+                    .IsRequired()
+                    .HasColumnName("RESPTEXTO")
+                    .HasColumnType("text");
 
-                entity.Property(e => e.Userid).HasColumnName("userid");
+                entity.Property(e => e.Userid)
+                    .HasColumnName("USERID")
+                    .HasColumnType("numeric(18, 0)");
 
                 entity.HasOne(d => d.Preg)
                     .WithMany(p => p.Respuesta)
                     .HasForeignKey(d => d.Pregid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_respuest_tiene_pregunta");
+                    .HasConstraintName("FK_RESPUEST_PREGRESP_PREGUNTA");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Respuesta)
                     .HasForeignKey(d => d.Userid)
-                    .HasConstraintName("fk_respuest_da_usuario");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RESPUEST_USERRESP_USUARIO");
             });
 
             modelBuilder.Entity<Usuario>(entity =>
             {
-                entity.HasKey(e => e.Userid)
-                    .HasName("pk_usuario");
+                entity.HasKey(e => e.Userid);
 
-                entity.ToTable("usuario");
-
-                entity.HasIndex(e => e.Useremail)
-                    .HasName("email_uniq")
-                    .IsUnique();
+                entity.ToTable("USUARIO");
 
                 entity.HasIndex(e => e.Usernick)
-                    .HasName("nick_uniq")
+                    .HasName("uniq_nick")
                     .IsUnique();
 
-                entity.HasIndex(e => new { e.Userid, e.Usernick })
-                    .HasName("usuario_pk")
-                    .IsUnique();
+                entity.Property(e => e.Userid)
+                    .HasColumnName("USERID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
 
-                entity.Property(e => e.Userid).HasColumnName("userid");
+                entity.Property(e => e.Useradmin).HasColumnName("USERADMIN");
 
-                entity.Property(e => e.Useradmin)
-                    .HasColumnName("useradmin")
-                    .HasDefaultValueSql("false");
+                entity.Property(e => e.Userapellido)
+                    .IsRequired()
+                    .HasColumnName("USERAPELLIDO")
+                    .HasColumnType("text");
 
-                entity.Property(e => e.Userapellido).HasColumnName("userapellido");
-
-                entity.Property(e => e.Useremail).HasColumnName("useremail");
+                entity.Property(e => e.Useremail)
+                    .IsRequired()
+                    .HasColumnName("USEREMAIL")
+                    .HasColumnType("text");
 
                 entity.Property(e => e.Userfechanacimiento)
                     .HasColumnName("userfechanacimiento")
                     .HasColumnType("date");
 
-                entity.Property(e => e.Userfoto).HasColumnName("userfoto");
+                entity.Property(e => e.Userfoto)
+                    .IsRequired()
+                    .HasColumnName("USERFOTO")
+                    .HasColumnType("text");
 
                 entity.Property(e => e.Usernick)
                     .IsRequired()
-                    .HasColumnName("usernick");
+                    .HasColumnName("USERNICK")
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .IsFixedLength();
 
-                entity.Property(e => e.Usernombre).HasColumnName("usernombre");
+                entity.Property(e => e.Usernombre)
+                    .IsRequired()
+                    .HasColumnName("USERNOMBRE")
+                    .HasColumnType("text");
 
-                entity.Property(e => e.Userpass).HasColumnName("userpass");
+                entity.Property(e => e.Userpass)
+                    .IsRequired()
+                    .HasColumnName("USERPASS")
+                    .HasColumnType("text");
 
                 entity.Property(e => e.Userpuntaje)
-                    .HasColumnName("userpuntaje")
-                    .HasDefaultValueSql("20");
+                    .HasColumnName("USERPUNTAJE")
+                    .HasDefaultValueSql("((20))");
 
                 entity.Property(e => e.Usersexo)
                     .IsRequired()
-                    .HasColumnName("usersexo")
+                    .HasColumnName("USERSEXO")
                     .HasMaxLength(9)
-                    .IsFixedLength()
-                    .HasDefaultValueSql("'Otro'::bpchar");
+                    .IsUnicode(false)
+                    .IsFixedLength();
             });
 
             OnModelCreatingPartial(modelBuilder);
