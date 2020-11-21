@@ -192,7 +192,8 @@ namespace Proyecto.Controllers
                             userfoto = p.Userfoto,
                             useradmin=p.Useradmin,
                             usersexo=p.Usersexo,
-                            userpuntaje=p.Userpuntaje
+                            userpuntaje=p.Userpuntaje, 
+                            userpass= p.Userpass
                         };
             return Ok(data);
         }
@@ -257,7 +258,6 @@ namespace Proyecto.Controllers
             var route = Request.Path.Value;
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
             var consulta = from p in _context.Pregunta
-                        join u in _context.Usuario on p.Userid equals u.Userid
                         where p.Userid == id
                         select new
                         {
@@ -266,7 +266,8 @@ namespace Proyecto.Controllers
                             pregdetalle = p.Pregdetalle,
                             pregfecha = p.Pregfecha,
                             preghora = p.Preghora,
-                            pregestado = p.Pregestado
+                            pregestado = p.Pregestado,
+                            pregcategoria = p.Catnombre
                         };
             var data = consulta.Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
             .Take(validFilter.PageSize)
@@ -284,7 +285,6 @@ namespace Proyecto.Controllers
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
             var consulta = from p in _context.Pregunta
                         join r in _context.Respuesta on p.Pregid equals r.Pregid
-                        join u in _context.Usuario on p.Userid equals u.Userid
                         where r.Userid == id
                         select new
                         {
