@@ -74,7 +74,7 @@ namespace Proyecto.Controllers
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
             
             var data = _context.Pregunta
-            .FromSqlRaw("select  * from pregunta order by random()")
+            .FromSqlRaw("SELECT * FROM PREGUNTA ORDER BY NEWID() OFFSET 5 ROWS")
             .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
             .Take(validFilter.PageSize)
             .ToList();
@@ -90,7 +90,7 @@ namespace Proyecto.Controllers
             var route = Request.Path.Value;
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
             var data =  _context.Pregunta
-            .FromSqlRaw("select * FROM pregunta WHERE pregtexto ILIKE '%"+busqueda+"%' OR pregdetalle ILIKE '%"+busqueda+"%' OR catnombre ILIKE '%"+busqueda+"%'")
+            .FromSqlRaw("select * FROM pregunta WHERE pregtexto LIKE '%"+busqueda+"%' OR pregdetalle LIKE '%"+busqueda+"%' OR catnombre LIKE '%"+busqueda+"%'")
             .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
             .Take(validFilter.PageSize)
             .ToList();
