@@ -38,7 +38,7 @@ namespace Proyecto.Controllers
 
         // GET: api/Categoria/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Categoria>> GetCategoria(int id)
+        public async Task<ActionResult<Categoria>> GetCategoria(decimal id)
         {
             var categoria = await _context.Categoria.FindAsync(id);
 
