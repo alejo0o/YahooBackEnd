@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyecto.Models;
+using Proyecto.Pagination;
 
 namespace Proyecto.Controllers
 {
@@ -14,17 +15,27 @@ namespace Proyecto.Controllers
     public class CategoriaController : ControllerBase
     {
         private readonly paproyectoContext _context;
+        private readonly IUriService uriService;
 
-        public CategoriaController(paproyectoContext context)
+        public CategoriaController(paproyectoContext context,IUriService uriService)
         {
             _context = context;
+             this.uriService = uriService;
         }
 
         // GET: api/Categoria
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoria()
+        public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoria([FromQuery] PaginationFilter filter)
         {
-            return await _context.Categoria.ToListAsync();
+            var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var data = await _context.Categoria
+                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                .Take(validFilter.PageSize)
+                .ToListAsync();
+            var totalRecords = await _context.Categoria.CountAsync();
+            var pagedReponse = PaginationHelper.CreatePagedReponse<Categoria>(data, validFilter, totalRecords, uriService, route);
+            return Ok(pagedReponse);
         }
 
         // GET: api/Categoria/5

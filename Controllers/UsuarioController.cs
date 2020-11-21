@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Proyecto.Models;
+using Proyecto.Pagination;
 
 namespace Proyecto.Controllers
 {
@@ -14,17 +15,28 @@ namespace Proyecto.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly paproyectoContext _context;
+        private readonly IUriService uriService;
 
-        public UsuarioController(paproyectoContext context)
+
+        public UsuarioController(paproyectoContext context,IUriService uriService)
         {
             _context = context;
+            this.uriService = uriService;
         }
 
         // GET: api/Usuario
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuario()
+        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuario([FromQuery] PaginationFilter filter)
         {
-            return await _context.Usuario.ToListAsync();
+            var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var data = await _context.Usuario
+                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                .Take(validFilter.PageSize)
+                .ToListAsync();
+            var totalRecords = await _context.Usuario.CountAsync();
+            var pagedReponse = PaginationHelper.CreatePagedReponse<Usuario>(data, validFilter, totalRecords, uriService, route);
+            return Ok(pagedReponse);
         }
 
         // GET: api/Usuario/5

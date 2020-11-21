@@ -251,8 +251,9 @@ namespace Proyecto.Models
 
                 entity.Property(e => e.Userpass)
                     .IsRequired()
-                    .HasColumnName("USERPASS")
-                    .HasColumnType("text");
+                    .HasColumnName("userpass")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Userpuntaje)
                     .HasColumnName("USERPUNTAJE")
