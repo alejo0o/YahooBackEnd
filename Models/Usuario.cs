@@ -10,7 +10,6 @@ namespace Proyecto.Models
             MensajeAdmin = new HashSet<Mensaje>();
             MensajeUser = new HashSet<Mensaje>();
             Pregunta = new HashSet<Pregunta>();
-            Respuesta = new HashSet<Respuesta>();
         }
 
         public decimal Userid { get; set; }
@@ -28,6 +27,5 @@ namespace Proyecto.Models
         public virtual ICollection<Mensaje> MensajeAdmin { get; set; }
         public virtual ICollection<Mensaje> MensajeUser { get; set; }
         public virtual ICollection<Pregunta> Pregunta { get; set; }
-        public virtual ICollection<Respuesta> Respuesta { get; set; }
     }
 }

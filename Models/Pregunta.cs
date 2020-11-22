@@ -20,6 +20,7 @@ namespace Proyecto.Models
         public TimeSpan Preghora { get; set; }
         public bool Pregestado { get; set; }
         public int? Pregmejorresp { get; set; }
+        public bool Pregmulta { get; set; }
 
         public virtual Categoria Cat { get; set; }
         public virtual Usuario User { get; set; }
