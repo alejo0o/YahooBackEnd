@@ -336,6 +336,34 @@ namespace Proyecto.Controllers
         }
 
 
+        //Función para mensajes por usuario
+        [HttpGet("menUser/{id}")]
+        public IActionResult menUser(int id,[FromQuery] PaginationFilter filter)
+        {
+            var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var consulta = from m in _context.Mensaje
+                        join u in _context.Usuario on m.Adminid equals u.Userid
+                        where m.Userid == id
+                        select new
+                        {
+                            menid = m.Menid,
+                            mentitulo = m.Mentitulo,
+                            mendetalle = m.Mendetalle,
+                            menfecha = m.Menfecha,
+                            menhora = m.Menhora,
+                            adminnombre = u.Usernombre
+                        };
+            var data = consulta.Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+            .Take(validFilter.PageSize)
+            .ToList();
+            var totalRecords = consulta.Count();
+            var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
+            return Ok(pagedReponse);
+        }
+     
+
+
 
     }
     
