@@ -14,6 +14,5 @@ namespace Proyecto.Models
         public TimeSpan Menhora { get; set; }
 
         public virtual Usuario Admin { get; set; }
-        public virtual Usuario User { get; set; }
     }
 }

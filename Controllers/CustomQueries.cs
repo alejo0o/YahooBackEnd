@@ -323,7 +323,8 @@ namespace Proyecto.Controllers
                             pregdetalle = p.Pregdetalle,
                             pregfecha = p.Pregfecha,
                             preghora = p.Preghora,
-                            pregestado = p.Pregestado
+                            pregestado = p.Pregestado,
+                            pregcategoria=p.Catnombre
 
                         };
             var data = consulta.Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
