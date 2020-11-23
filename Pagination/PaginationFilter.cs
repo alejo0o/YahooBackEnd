@@ -7,12 +7,12 @@ namespace Proyecto.Pagination
     public PaginationFilter()
     {
         this.PageNumber = 1;
-        this.PageSize = 5;
+        this.PageSize = 20;
     }
     public PaginationFilter(int pageNumber, int pageSize)
     {
         this.PageNumber = pageNumber < 1 ? 1 : pageNumber;
-        this.PageSize = pageSize > 5 ? 5 : pageSize;
+        this.PageSize = pageSize > 20 ? 20 : pageSize;
     }
 }
 }

@@ -13,6 +13,5 @@ namespace Proyecto.Models
         public TimeSpan Resphora { get; set; }
 
         public virtual Pregunta Preg { get; set; }
-        public virtual Usuario User { get; set; }
     }
 }

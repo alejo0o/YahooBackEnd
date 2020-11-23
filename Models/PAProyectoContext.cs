@@ -24,6 +24,7 @@ namespace Proyecto.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -136,6 +137,8 @@ namespace Proyecto.Models
 
                 entity.Property(e => e.Pregmejorresp).HasColumnName("PREGMEJORRESP");
 
+                entity.Property(e => e.Pregmulta).HasColumnName("pregmulta");
+
                 entity.Property(e => e.Pregtexto)
                     .IsRequired()
                     .HasColumnName("PREGTEXTO")
@@ -193,12 +196,6 @@ namespace Proyecto.Models
                     .WithMany(p => p.Respuesta)
                     .HasForeignKey(d => d.Pregid)
                     .HasConstraintName("FK_RESPUEST_PREGRESP_PREGUNTA");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Respuesta)
-                    .HasForeignKey(d => d.Userid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RESPUEST_USERRESP_USUARIO");
             });
 
             modelBuilder.Entity<Usuario>(entity =>
@@ -251,8 +248,9 @@ namespace Proyecto.Models
 
                 entity.Property(e => e.Userpass)
                     .IsRequired()
-                    .HasColumnName("USERPASS")
-                    .HasColumnType("text");
+                    .HasColumnName("userpass")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Userpuntaje)
                     .HasColumnName("USERPUNTAJE")

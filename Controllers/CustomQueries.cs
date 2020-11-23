@@ -180,7 +180,7 @@ namespace Proyecto.Controllers
             var route = Request.Path.Value;
             var data = from p in _context.Usuario
                         where p.Usernick == nick
-                        where Convert.ToString(p.Userpass) == pass
+                        where p.Userpass == pass
                         select new
                         {
                             userid=p.Userid,

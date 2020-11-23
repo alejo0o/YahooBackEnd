@@ -40,7 +40,7 @@ namespace Proyecto.Controllers
 
         // GET: api/Respuesta/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Respuesta>> GetRespuesta(int id)
+        public async Task<ActionResult<Respuesta>> GetRespuesta(decimal id)
         {
             var respuesta = await _context.Respuesta.FindAsync(id);
 
@@ -56,7 +56,7 @@ namespace Proyecto.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<ActionResult<Respuesta>> PutRespuesta(int id, Respuesta respuesta)
+        public async Task<IActionResult> PutRespuesta(decimal id, Respuesta respuesta)
         {
             if (id != respuesta.Respid)
             {
@@ -81,7 +81,7 @@ namespace Proyecto.Controllers
                 }
             }
 
-            return respuesta;
+            return NoContent();
         }
 
         // POST: api/Respuesta
@@ -98,7 +98,7 @@ namespace Proyecto.Controllers
 
         // DELETE: api/Respuesta/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Respuesta>> DeleteRespuesta(int id)
+        public async Task<ActionResult<Respuesta>> DeleteRespuesta(decimal id)
         {
             var respuesta = await _context.Respuesta.FindAsync(id);
             if (respuesta == null)
@@ -112,7 +112,7 @@ namespace Proyecto.Controllers
             return respuesta;
         }
 
-        private bool RespuestaExists(int id)
+        private bool RespuestaExists(decimal id)
         {
             return _context.Respuesta.Any(e => e.Respid == id);
         }

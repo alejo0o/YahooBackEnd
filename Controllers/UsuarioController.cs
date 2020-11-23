@@ -17,6 +17,7 @@ namespace Proyecto.Controllers
         private readonly paproyectoContext _context;
         private readonly IUriService uriService;
 
+
         public UsuarioController(paproyectoContext context,IUriService uriService)
         {
             _context = context;
@@ -40,7 +41,7 @@ namespace Proyecto.Controllers
 
         // GET: api/Usuario/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> GetUsuario(int id)
+        public async Task<ActionResult<Usuario>> GetUsuario(decimal id)
         {
             var usuario = await _context.Usuario.FindAsync(id);
 
@@ -56,7 +57,7 @@ namespace Proyecto.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<ActionResult<Usuario>> PutUsuario(int id, Usuario usuario)
+        public async Task<IActionResult> PutUsuario(decimal id, Usuario usuario)
         {
             if (id != usuario.Userid)
             {
@@ -81,7 +82,7 @@ namespace Proyecto.Controllers
                 }
             }
 
-            return usuario;
+            return NoContent();
         }
 
         // POST: api/Usuario
@@ -98,7 +99,7 @@ namespace Proyecto.Controllers
 
         // DELETE: api/Usuario/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Usuario>> DeleteUsuario(int id)
+        public async Task<ActionResult<Usuario>> DeleteUsuario(decimal id)
         {
             var usuario = await _context.Usuario.FindAsync(id);
             if (usuario == null)
@@ -112,7 +113,7 @@ namespace Proyecto.Controllers
             return usuario;
         }
 
-        private bool UsuarioExists(int id)
+        private bool UsuarioExists(decimal id)
         {
             return _context.Usuario.Any(e => e.Userid == id);
         }
