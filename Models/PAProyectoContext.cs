@@ -23,8 +23,11 @@ namespace Proyecto.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
-
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=tcp:paproyecto123.database.windows.net,1433;Initial Catalog=paproyecto;Persist Security Info=False;User ID=propa;Password=Qwerty12345;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -89,15 +92,9 @@ namespace Proyecto.Models
                     .HasColumnType("numeric(18, 0)");
 
                 entity.HasOne(d => d.Admin)
-                    .WithMany(p => p.MensajeAdmin)
+                    .WithMany(p => p.Mensaje)
                     .HasForeignKey(d => d.Adminid)
                     .HasConstraintName("FK_MENSAJE_ADMINMEN_USUARIO");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.MensajeUser)
-                    .HasForeignKey(d => d.Userid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MENSAJE_USERMEN_USUARIO");
             });
 
             modelBuilder.Entity<Pregunta>(entity =>
