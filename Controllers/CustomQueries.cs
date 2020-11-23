@@ -345,6 +345,8 @@ namespace Proyecto.Controllers
             var consulta = from m in _context.Mensaje
                         join u in _context.Usuario on m.Adminid equals u.Userid
                         where m.Userid == id
+                        orderby m.Menfecha ascending
+                        orderby m.Menhora ascending
                         select new
                         {
                             menid = m.Menid,
