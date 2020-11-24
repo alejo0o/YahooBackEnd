@@ -206,8 +206,8 @@ namespace Proyecto.Controllers
             var route = Request.Path.Value;
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
             var consulta = from p in _context.Pregunta
-                        join u in _context.Usuario on p.Userid equals u.Userid
                         join r in _context.Respuesta on p.Pregid equals r.Pregid
+                        join u in _context.Usuario on r.Userid equals u.Userid
                         where p.Pregid == id
                         where p.Pregmejorresp == r.Respid
                         select new
