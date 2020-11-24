@@ -176,6 +176,7 @@ namespace Proyecto.Controllers
             var data = consulta;
             return Ok(data);
         }
+        // obtiene las credenciales del usuario
         [HttpGet("getUsuario/{nick}/{pass}")]
         public IActionResult getBuscar(string nick, string pass ,[FromQuery] PaginationFilter filter)
         {
@@ -368,6 +369,7 @@ namespace Proyecto.Controllers
         }
 
 
+
         //Función para perfil de usuario con número de preguntas
         [HttpGet("Countpreguntas/{id}")]
         public IActionResult Countpreguntas(int id)
@@ -391,6 +393,16 @@ namespace Proyecto.Controllers
         }
 
      
+        //obtiene la cantidad de respuestas en una pregunta para la verificacion de primera respuesta
+        [HttpGet("primeraRespuesta/{id}")]
+        public IActionResult primeraRespuesta(int id)
+        {
+            var data = (from respuestas in _context.Respuesta
+                        where respuestas.Pregid == id
+                        select respuestas).Count();
+                        
+            return Ok(data);
+        }
 
 
 
