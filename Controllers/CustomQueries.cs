@@ -129,8 +129,8 @@ namespace Proyecto.Controllers
                         join p in _context.Pregunta on r.Pregid equals p.Pregid
                         where r.Pregid == id
                         where r.Respid != p.Pregmejorresp 
-                        orderby r.Respfecha ascending
-                        orderby r.Resphora ascending
+                        orderby r.Respfecha descending,
+                        r.Resphora descending
                         select new
                         {
                             respid = r.Respid,
@@ -296,6 +296,7 @@ namespace Proyecto.Controllers
                             pregid = p.Pregid,
                             pregtexto = p.Pregtexto,
                             pregdetalle = p.Pregdetalle,
+                            pregestado = p.Pregestado,
                             respid = r.Respid,
                             respfecha = r.Respfecha,
                             resptexto = r.Resptexto,
@@ -349,8 +350,8 @@ namespace Proyecto.Controllers
             var consulta = from m in _context.Mensaje
                         join u in _context.Usuario on m.Adminid equals u.Userid
                         where m.Userid == id
-                        orderby m.Menfecha ascending
-                        orderby m.Menhora ascending
+                        orderby m.Menfecha ascending,
+                        m.Menhora ascending
                         select new
                         {
                             menid = m.Menid,
