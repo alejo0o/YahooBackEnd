@@ -169,7 +169,8 @@ namespace Proyecto.Controllers
                             preghora = p.Preghora,
                             pregmejorresp = p.Pregmejorresp,
                             usernick = u.Usernick,
-                            userfoto = u.Userfoto
+                            userfoto = u.Userfoto,
+                            estado=p.Pregestado
                         };
             var data = consulta;
             return Ok(data);
