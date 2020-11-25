@@ -138,7 +138,8 @@ namespace Proyecto.Controllers
                             resptexto = r.Resptexto,
                             resphora = r.Resphora,
                             usernick = u.Usernick,
-                            userfoto = u.Userfoto
+                            userfoto = u.Userfoto,
+                            userid = r.Userid
                         };
             var data = consulta.Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
             .Take(validFilter.PageSize)
@@ -168,6 +169,7 @@ namespace Proyecto.Controllers
                             pregfecha = p.Pregfecha,
                             preghora = p.Preghora,
                             pregmejorresp = p.Pregmejorresp,
+                            userid = p.Userid,
                             usernick = u.Usernick,
                             userfoto = u.Userfoto
                         };
@@ -218,7 +220,8 @@ namespace Proyecto.Controllers
                             resptexto = r.Resptexto,
                             resphora = r.Resphora,
                             usernick = u.Usernick,
-                            userfoto = u.Userfoto
+                            userfoto = u.Userfoto,
+                            userid = r.Userid
                         };
             var data = consulta;
             return Ok(data);
@@ -364,6 +367,32 @@ namespace Proyecto.Controllers
             var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
             return Ok(pagedReponse);
         }
+
+
+        //Función para perfil de usuario con número de preguntas
+        [HttpGet("Countpreguntas/{id}")]
+        public IActionResult Countpreguntas(int id)
+        {
+            var data = (from preguntas in _context.Pregunta
+                        where preguntas.Userid == id
+                        select preguntas).Count();
+                        
+            return Ok(data);        
+        }
+
+        //Función para perfil de usuario con número de respuestas
+        [HttpGet("Countrespuesta/{id}")]
+        public IActionResult Countrespuesta(int id)
+        {
+            var data = (from respuestas in _context.Respuesta
+                        where respuestas.Userid == id
+                        select respuestas).Count();
+                        
+            return Ok(data);        
+        }
+
+     
+
         //obtiene la cantidad de respuestas en una pregunta para la verificacion de primera respuesta
         [HttpGet("primeraRespuesta/{id}")]
         public int primeraRespuesta(int id)
