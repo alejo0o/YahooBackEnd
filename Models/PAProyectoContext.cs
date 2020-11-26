@@ -23,7 +23,11 @@ namespace Proyecto.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=tcp:paproyecto123.database.windows.net,1433;Initial Catalog=paproyecto;Persist Security Info=False;User ID=propa;Password=Qwerty12345;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -222,7 +226,10 @@ namespace Proyecto.Models
                     .HasColumnName("userfechanacimiento")
                     .HasColumnType("date");
 
-                entity.Property(e => e.Userfoto).HasColumnName("userfoto");
+                entity.Property(e => e.Userfoto)
+                    .HasColumnName("userfoto")
+                    .HasColumnType("text")
+                    .HasDefaultValueSql("('https://w7.pngwing.com/pngs/81/570/png-transparent-profile-logo-computer-icons-user-user-blue-heroes-logo-thumbnail.png')");
 
                 entity.Property(e => e.Usernick)
                     .IsRequired()

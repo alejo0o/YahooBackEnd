@@ -21,7 +21,7 @@ namespace Proyecto.Models
         public int Userpuntaje { get; set; }
         public DateTime Userfechanacimiento { get; set; }
         public string Userpass { get; set; }
-        public byte[] Userfoto { get; set; }
+        public string Userfoto { get; set; }
 
         public virtual ICollection<Mensaje> Mensaje { get; set; }
         public virtual ICollection<Pregunta> Pregunta { get; set; }

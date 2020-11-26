@@ -91,6 +91,7 @@ namespace Proyecto.Controllers
         [HttpPost]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {
+            
             _context.Usuario.Add(usuario);
             await _context.SaveChangesAsync();
 
