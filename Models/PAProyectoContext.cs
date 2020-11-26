@@ -227,6 +227,7 @@ namespace Proyecto.Models
                     .HasColumnType("date");
 
                 entity.Property(e => e.Userfoto)
+                    .IsRequired()
                     .HasColumnName("userfoto")
                     .HasColumnType("text")
                     .HasDefaultValueSql("('https://w7.pngwing.com/pngs/81/570/png-transparent-profile-logo-computer-icons-user-user-blue-heroes-logo-thumbnail.png')");
