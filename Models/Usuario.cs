@@ -16,12 +16,12 @@ namespace Proyecto.Models
         public string Userapellido { get; set; }
         public string Usernick { get; set; }
         public string Useremail { get; set; }
-        public string Userfoto { get; set; }
         public bool Useradmin { get; set; }
         public string Usersexo { get; set; }
         public int Userpuntaje { get; set; }
         public DateTime Userfechanacimiento { get; set; }
         public string Userpass { get; set; }
+        public byte[] Userfoto { get; set; }
 
         public virtual ICollection<Mensaje> Mensaje { get; set; }
         public virtual ICollection<Pregunta> Pregunta { get; set; }

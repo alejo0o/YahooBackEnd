@@ -222,10 +222,7 @@ namespace Proyecto.Models
                     .HasColumnName("userfechanacimiento")
                     .HasColumnType("date");
 
-                entity.Property(e => e.Userfoto)
-                    .IsRequired()
-                    .HasColumnName("USERFOTO")
-                    .HasColumnType("text");
+                entity.Property(e => e.Userfoto).HasColumnName("userfoto");
 
                 entity.Property(e => e.Usernick)
                     .IsRequired()
