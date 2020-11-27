@@ -174,7 +174,7 @@ namespace Proyecto.Controllers
                             userfoto = u.Userfoto,
                             estado=p.Pregestado
                         };
-            var data = consulta;
+            var data = consulta.First();
             return Ok(data);
         }
         // obtiene las credenciales del usuario
@@ -199,7 +199,7 @@ namespace Proyecto.Controllers
                             userpuntaje=p.Userpuntaje, 
                             userpass= p.Userpass
                         };
-            return Ok(data);
+            return Ok(data.First());
         }
 
         
@@ -224,7 +224,7 @@ namespace Proyecto.Controllers
                             userfoto = u.Userfoto,
                             userid = r.Userid
                         };
-            var data = consulta;
+            var data = consulta.First();
             return Ok(data);
         }
 
