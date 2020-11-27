@@ -199,7 +199,7 @@ namespace Proyecto.Controllers
                             userpuntaje=p.Userpuntaje, 
                             userpass= p.Userpass
                         };
-            return Ok(data.First());
+            return Ok(data);
         }
 
         
@@ -224,8 +224,8 @@ namespace Proyecto.Controllers
                             userfoto = u.Userfoto,
                             userid = r.Userid
                         };
-            var data = consulta.First();
-            return Ok(data);
+           
+            return Ok(consulta);
         }
 
 
