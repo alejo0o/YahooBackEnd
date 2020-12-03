@@ -67,6 +67,25 @@ namespace Proyecto.Controllers
             .ToList();             
             return Ok(data);
         }
+
+        [HttpGet("ordenarcategoria")]
+        public IActionResult ordenarcategoria(int id,[FromQuery] PaginationFilter filter)
+        {
+            var consulta = from c in _context.Categoria
+                           orderby c.Catnombre ascending
+                           select new
+                           {
+                               catid=c.Catid,
+                               catnombre=c.Catnombre,
+                               catdescripcion=c.Catdescripcion
+                           };
+            var data = consulta     
+            .Take(10)
+            .ToList();             
+            return Ok(data);
+        }
+
+
         [HttpGet("getpreguntasaleatorias")]
         public  IActionResult getPreguntasAleatorias([FromQuery] PaginationFilter filter)
         {
