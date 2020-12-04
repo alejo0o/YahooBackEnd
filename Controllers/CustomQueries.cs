@@ -71,6 +71,9 @@ namespace Proyecto.Controllers
         [HttpGet("ordenarcategoria")]
         public IActionResult ordenarcategoria(int id,[FromQuery] PaginationFilter filter)
         {
+            var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+
             var consulta = from c in _context.Categoria
                            orderby c.Catnombre ascending
                            select new
@@ -80,9 +83,10 @@ namespace Proyecto.Controllers
                                catdescripcion=c.Catdescripcion
                            };
             var data = consulta     
-            .Take(10)
             .ToList();             
-            return Ok(data);
+            var totalRecords = consulta.Count();
+            var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
+            return Ok(pagedReponse);
         }
 
 
