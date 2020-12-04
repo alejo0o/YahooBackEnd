@@ -67,6 +67,29 @@ namespace Proyecto.Controllers
             .ToList();             
             return Ok(data);
         }
+
+        [HttpGet("ordenarcategoria")]
+        public IActionResult ordenarcategoria(int id,[FromQuery] PaginationFilter filter)
+        {
+            var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+
+            var consulta = from c in _context.Categoria
+                           orderby c.Catnombre ascending
+                           select new
+                           {
+                               catid=c.Catid,
+                               catnombre=c.Catnombre,
+                               catdescripcion=c.Catdescripcion
+                           };
+            var data = consulta     
+            .ToList();             
+            var totalRecords = consulta.Count();
+            var pagedReponse = PaginationHelper.CreatePagedReponse(data, validFilter, totalRecords, uriService, route);
+            return Ok(pagedReponse);
+        }
+
+
         [HttpGet("getpreguntasaleatorias")]
         public  IActionResult getPreguntasAleatorias([FromQuery] PaginationFilter filter)
         {
@@ -129,8 +152,8 @@ namespace Proyecto.Controllers
                         join p in _context.Pregunta on r.Pregid equals p.Pregid
                         where r.Pregid == id
                         where r.Respid != p.Pregmejorresp 
-                        orderby r.Respfecha ascending
-                        orderby r.Resphora ascending
+                        orderby r.Respfecha descending,
+                        r.Resphora descending
                         select new
                         {
                             respid = r.Respid,
@@ -350,8 +373,8 @@ namespace Proyecto.Controllers
             var consulta = from m in _context.Mensaje
                         join u in _context.Usuario on m.Adminid equals u.Userid
                         where m.Userid == id
-                        orderby m.Menfecha ascending
-                        orderby m.Menhora ascending
+                        orderby m.Menfecha descending,
+                        m.Menhora descending
                         select new
                         {
                             menid = m.Menid,
